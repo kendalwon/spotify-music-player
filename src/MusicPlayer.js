@@ -1,20 +1,9 @@
 import React from 'react';
 import logo from './logo.svg';
+import hash from './hash';
 import './MusicPlayer.css';
 import Player from './Player';
 import {authEndpoint, clientId, redirectUri, scopes} from './configs/config';
-
-const hash = window.location.hash
-  .substring(1)
-  .split("&")
-  .reduce(function(initial, item) {
-    if (item) {
-      var parts = item.split("=");
-      initial[parts[0]] = decodeURIComponent(parts[1]);
-    }
-    return initial;
-  }, {});
-window.location.hash = "";
 
 class MusicPlayer extends React.Component {
   constructor() {
@@ -41,12 +30,7 @@ class MusicPlayer extends React.Component {
       this.setState({
         token: _token
       });
-    }
-  }
-
-  componentDidUpdate(_prevProps, prevState) {
-    if (this.state.token !== prevState.token) {
-      this.getCurrentlyPlaying(this.state.token);
+    this.getCurrentlyPlaying(_token);
     }
   }
 
@@ -56,6 +40,7 @@ class MusicPlayer extends React.Component {
     fetch(url, {
       headers: {'Authorization': 'Bearer ' + token}
     })
+    .then(response => response.json())
     .then(response => {
       console.log(response);
       return response;
@@ -79,7 +64,7 @@ class MusicPlayer extends React.Component {
         <img src={logo} className="App-logo" alt="logo" />
         {!this.state.token && (
           <a
-            className="btn btn--loginApp-link"
+            className="btn btn--login App-link"
             href={spotifyQueryString}
           >
             Login to Spotify
