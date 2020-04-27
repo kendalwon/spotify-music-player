@@ -10,7 +10,7 @@ class MusicPlayer extends React.Component {
     super();
     this.state = {
       token: null,
-      item: {
+      currentlyPlaying: {
         album: {
           images: [{ url: "" }]
         },
@@ -18,10 +18,19 @@ class MusicPlayer extends React.Component {
         artists: [{ name: "" }],
         duration_ms:0,
       },
-      is_playing: "Paused",
+      recentlyPlayed: {
+        album: {
+          images: [{ url: "" }]
+        },
+        name: "",
+        artists: [{ name: "" }],
+        duration_ms:0,
+      },
+      selectedItem: null,
       progress_ms: 0
     };
     this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
+    this.getRecentlyPlayed = this.getRecentlyPlayed.bind(this);
   }
 
   componentDidMount() {
@@ -34,9 +43,45 @@ class MusicPlayer extends React.Component {
     }
   }
 
+  componentDidUpdate(_prevProps, prevState) {
+    if (this.state.currentlyPlaying !== prevState.currentlyPlaying && this.state.currentlyPlaying === null) {
+      this.getRecentlyPlayed(this.state.token)
+    }
+  }
+
   getCurrentlyPlaying(token) {
     console.log('getting currently playing');
     const url = 'https://api.spotify.com/v1/me/player/currently-playing';
+    fetch(url, {
+      headers: {'Authorization': 'Bearer ' + token}
+    })
+    .then(response => {
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        this.setState({
+          currentlyPlaying: null
+        });
+        return Promise.reject('nothing is playing');
+      }
+    })
+    .then(response => {
+      console.log(response);
+      return response;
+    })
+    .then(response => {
+      this.setState({
+        currentlyPlaying: response.item,
+        selectedItem: 'current',
+        progress_ms: response.progress_ms
+      });
+    })
+    .catch(error => console.log(error));
+  }
+
+  getRecentlyPlayed(token) {
+    console.log('getting recently played');
+    const url = 'https://api.spotify.com/v1/me/player/recently-played';
     fetch(url, {
       headers: {'Authorization': 'Bearer ' + token}
     })
@@ -46,10 +91,18 @@ class MusicPlayer extends React.Component {
       return response;
     })
     .then(response => {
+      const images = response.items[0].track.album.images;
+      const name = response.items[0].track.album.name;
+      const artists = response.items[0].track.album.artists[0].name;
       this.setState({
-        item: response.item,
-        is_playing: response.is_playing,
-        progress_ms: response.progress_ms
+        recentlyPlayed: {
+        album: {
+          images: images
+        },
+        name: name,
+        artists: artists
+      },
+        selectedItem: 'recent'
       });
     })
     .catch(error => console.log(error));
@@ -70,11 +123,11 @@ class MusicPlayer extends React.Component {
             Login to Spotify
           </a>
         )}
-        {this.state.token && (
+        {this.state.selectedItem && (
           <Player
-            item={this.state.item}
-            is_playing={this.state.is_playing}
-            progress_ms={this.progress_ms}
+            item={(this.state.selectedItem === 'current') ? this.state.currentlyPlaying : this.state.recentlyPlayed}
+            selectedItem={this.state.selectedItem}
+            progress_ms={(this.state.selectedItem === 'current') ? this.progress_ms : null}
           />
         )}
         </header>

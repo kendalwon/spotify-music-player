@@ -21,17 +21,26 @@ const Player = props => {
           <div className="now-playing__artist">
             {props.item.artists[0].name}
           </div>
-          <div className="now-playing__status">
-            {props.is_playing ? "Playing" : "Paused"}
-          </div>
-          <div className="progress">
-            <div
-              className="progress__bar"
-              style={progressBarStyles}
-            />
-          </div>
-        </div>
+          {(props.selectedItem === 'currentlyPlaying') ? (
+            <>
+              <div className="now-playing__status">
+                now playing
+              </div>
+              <div className="progress">
+                <div className="progress__bar"
+                style={progressBarStyles}>
+                </div>
+              </div>
+            </>
+          ) :
+          (
+            <div className="now-playing__status">
+              recently played
+            </div>
+          )
+        }
         <div className="background" style={backgroundStyles} />{" "}
+        </div>
       </div>
     </div>
   );
