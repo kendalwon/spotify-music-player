@@ -2,39 +2,61 @@ body {
   font-family: Helvetica, Arial;
 }
 
-.now-playing__name {
-  font-size: 1.5em;
-  margin-bottom: 0.2em;
-}
-.now-playing__artist {
-  margin-bottom: 1em;
-}
-.now-playing__status {
-  margin: 2em 0 1em 0;
-  font-size: 14px;
-}
-.now-playing__img {
-  float: left;
-  margin-right: 10px;
-  text-align: right;
-  width: 45%;
-}
-.now-playing__img img {
-  max-width: 80vmin;
+.main-wrapper {
   width: 100%;
 }
-.now-playing__side {
-  margin-left: 5%;
-  width: 45%;
+
+.now-playing__img {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  margin: auto;
+  background-position: center;
+  filter: brightness(40%);
+  z-index: 1;
 }
-/** Progress **/
+
+.now-playing__name {
+  position: relative;
+  bottom: 280px;
+  max-width: 300px;
+  font-size: 30px;
+  margin: auto;
+  z-index: 5;
+}
+
+.now-playing__artist {
+  position: relative;
+  bottom: 280px;
+  max-width: 300px;
+  margin: auto;
+  z-index: 5;
+}
+
+.now-playing__status {
+  position: relative;
+  bottom: 150px;
+  font-size: 14px;
+  margin: auto;
+  z-index: 5;
+}
+
 .progress {
+  position: relative;
+  bottom: 130px;
   border: 1px solid #eee;
+  width: 200px;
+  margin: auto;
   height: 6px;
   border-radius: 3px;
   overflow: hidden;
+  z-index: 5;
 }
+
 .progress__bar {
+  position: relative;
+  bottom: 200px;
   background-color: #eee;
   height: 4px;
+  z-index: 5;
 }

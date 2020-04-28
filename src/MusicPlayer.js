@@ -10,22 +10,8 @@ class MusicPlayer extends React.Component {
     super();
     this.state = {
       token: null,
-      currentlyPlaying: {
-        album: {
-          images: [{ url: "" }]
-        },
-        name: "",
-        artists: [{ name: "" }],
-        duration_ms:0,
-      },
-      recentlyPlayed: {
-        album: {
-          images: [{ url: "" }]
-        },
-        name: "",
-        artists: [{ name: "" }],
-        duration_ms:0,
-      },
+      currentlyPlaying: null,
+      recentlyPlayed: null,
       selectedItem: null,
       progress_ms: 0
     };
@@ -44,7 +30,7 @@ class MusicPlayer extends React.Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    if (this.state.currentlyPlaying !== prevState.currentlyPlaying && this.state.currentlyPlaying === null) {
+    if (this.state.currentlyPlaying !== prevState.currentlyPlaying && this.state.currentlyPlaying === 'nothing') {
       this.getRecentlyPlayed(this.state.token)
     }
   }
@@ -60,7 +46,7 @@ class MusicPlayer extends React.Component {
         return response.json();
       } else {
         this.setState({
-          currentlyPlaying: null
+          currentlyPlaying: 'nothing'
         });
         return Promise.reject('nothing is playing');
       }
@@ -96,14 +82,14 @@ class MusicPlayer extends React.Component {
       const artists = response.items[0].track.album.artists[0].name;
       this.setState({
         recentlyPlayed: {
-        album: {
-          images: images
+          album: {
+            images: images
+          },
+          name: name,
+          artists: artists
         },
-        name: name,
-        artists: artists
-      },
-        selectedItem: 'recent'
-      });
+          selectedItem: 'recent'
+        });
     })
     .catch(error => console.log(error));
   }
@@ -113,8 +99,8 @@ class MusicPlayer extends React.Component {
     const spotifyQueryString = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`;
     return (
       <div className="musicPlayer">
-        <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <header className="header">
+          <img src={logo} className="logo" alt="logo" />
         {!this.state.token && (
           <a
             className="btn btn--login App-link"
@@ -123,14 +109,15 @@ class MusicPlayer extends React.Component {
             Login to Spotify
           </a>
         )}
+        </header>
         {this.state.selectedItem && (
           <Player
             item={(this.state.selectedItem === 'current') ? this.state.currentlyPlaying : this.state.recentlyPlayed}
             selectedItem={this.state.selectedItem}
-            progress_ms={(this.state.selectedItem === 'current') ? this.progress_ms : null}
+            progress_ms={(this.state.selectedItem === 'current') ? this.state.progress_ms : null}
           />
         )}
-        </header>
+        
       </div>
     );
   }
