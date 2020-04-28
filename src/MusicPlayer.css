@@ -1,17 +1,27 @@
-.App {
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ 
+body {
+  background-color: #282c34;
+  color: #eee;
+  font-family: Helvetica, Arial;
+  font-size: 3vmin;
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+.logo {
+  animation: logo-spin infinite 20s linear;
+  height: 20vmin;
   pointer-events: none;
   margin: 50px;
 }
 
-.App-header {
+.header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 40vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,11 +30,7 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
+@keyframes logo-spin {
   from {
     transform: rotate(0deg);
   }
@@ -32,29 +38,6 @@
     transform: rotate(360deg);
   }
 }
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html, body {
-  height: 100%;
-}
-
-body {
-  background-color: #333;
-  color: #eee;
-  font-family: Helvetica, Arial;
-  font-size: 3vmin;
-}
-
-.hidden {
-  display: none;
-}
-
-/** Buttons **/
 
 .btn {
   background-color: transparent;
@@ -67,6 +50,7 @@ body {
   text-transform: uppercase;
   transition: all 0.25s ease;
   text-decoration: none;
+  margin: 0 auto;
 }
 
 .btn:hover {
@@ -74,31 +58,14 @@ body {
   color: #333;
 }
 
-.btn--login {
-  margin: 0 auto;
-}
-
-/** Background **/
-
-.background {
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background-size: cover;
-  background-position: center center;
-  filter: blur(8em) opacity(0.6);
-  position: absolute;
-}
-
-.main-wrapper {
+/* .main-wrapper {
   align-items: center;
   display: flex;
   height: 100%;
   margin: 0 auto;
   justify-content: center;
   position: relative;
-  width: 80%;
+  width: 100%;
   z-index: 1;
 }
 
@@ -111,4 +78,4 @@ body {
 
 .main-container {
   flex: 1;
-}
+} */
