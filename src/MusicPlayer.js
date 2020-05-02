@@ -14,9 +14,7 @@ class MusicPlayer extends React.Component {
       recentlyPlayed: null,
       selectedItem: null,
       progress_ms: 0
-    };
-    this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
-    this.getRecentlyPlayed = this.getRecentlyPlayed.bind(this);
+    }
   }
 
   componentDidMount() {
@@ -35,7 +33,7 @@ class MusicPlayer extends React.Component {
     }
   }
 
-  getCurrentlyPlaying(token) {
+  getCurrentlyPlaying = (token) => {
     console.log('getting currently playing');
     const url = 'https://api.spotify.com/v1/me/player/currently-playing';
     fetch(url, {
@@ -65,7 +63,7 @@ class MusicPlayer extends React.Component {
     .catch(error => console.log(error));
   }
 
-  getRecentlyPlayed(token) {
+  getRecentlyPlayed = (token) => {
     console.log('getting recently played');
     const url = 'https://api.spotify.com/v1/me/player/recently-played';
     fetch(url, {
